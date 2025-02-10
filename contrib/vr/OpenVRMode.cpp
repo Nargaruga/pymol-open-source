@@ -1071,9 +1071,15 @@ void HandleLaser(PyMOLGlobals * G, int centerX, int centerY, CMouseEvent const& 
       if (Scene->LastPicked.context.object != NULL) {
         float atomHitColor[4] = {1.0f, 0.0f, 1.0f, 0.5f};
         laserSource->SetLaserColor(atomHitColor);
-        // select the atom
+
         if(Actions->Action1->WasPressed()) {
-          SceneClickObject(G, Scene->LastPicked.context.object, Scene->LastPicked, cButModeSeleToggle, "");
+          if(ButModeTranslate(G, P_GLUT_SINGLE_LEFT, 0) == cButModePickAtom) {
+            // select atom
+            SceneClickObject(G, Scene->LastPicked.context.object, Scene->LastPicked, cButModeSeleToggle, "");
+          } else {
+            // select residue
+            SceneClickObject(G, Scene->LastPicked.context.object, Scene->LastPicked, cButModeSeleToggle, "byres");
+          }
         }
       } else {
         // laser missed
